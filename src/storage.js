@@ -21,11 +21,13 @@ var storage = (function () {
     /*
      * The UserData class stores all information about the user's test
      */
-    function UserData(session, questions, lastQuestion, practiceTimes, testScores) {
+    function UserData(session, questions, lastQuestion, mode, startTime, practiceTimes, testScores) {
         // Save values or defaults
         this.questions = (questions) ? questions : [];
-        this.lastQuestion = (lastQuestion != null) ? lastQuestion : -1;
+        this.lastQuestion = (lastQuestion != null) ? parseInt(lastQuestion) : -1;
         this.practiceTimes = (practiceTimes) ? practiceTimes : [];
+        this.mode = (mode) ? mode : "";
+        this.startTime = (startTime) ? startTime : null;
         this.testScores= (testScores) ? testScores : [];
 
         // Save the session information
@@ -41,6 +43,8 @@ var storage = (function () {
                 Item: { UserID: {S: this._session.user.userId },
                         questions: {S: JSON.stringify(this.questions)},
                         lastQuestion: {S: this.lastQuestion.toString()},
+                        mode: {S: this.mode},
+                        startTime: {S: this.startTime.toString()},
                         practiceTimes: {S: JSON.stringify(this.practiceTimes)},
                         testScores: {S: JSON.stringify(this.testScores)}}
             }, function (err, data) {
@@ -64,6 +68,8 @@ var storage = (function () {
                 // It was in the session so no need to hit the DB
                 callback(new UserData(session, session.attributes.userData.questions,
                                     session.attributes.userData.lastQuestion,
+                                    session.attributes.userData.mode,
+                                    session.attributes.userData.startTime,
                                     session.attributes.userData.practiceTimes,
                                     session.attributes.userData.testScores));
             }
@@ -83,6 +89,7 @@ var storage = (function () {
                     else
                     {
                         userData = new UserData(session, JSON.parse(data.Item.questions.S), data.Item.lastQuestion.S,
+                                            data.Item.mode.S, data.Item.startTime.S,
                                             JSON.parse(data.Item.practiceTimes.S), JSON.parse(data.Item.testScores.S));
                         session.attributes.userData = userData.data;
                         callback(userData);

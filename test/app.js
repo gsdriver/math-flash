@@ -15,6 +15,8 @@ function BuildEvent(argv)
 {
     // Templates that can fill in the intent
     var practiceIntent = {"name": "PracticeIntent", "slots": {"Category": {"name": "Category", "value": ""}}};
+    var testIntent = {"name": "TestIntent", "slots": {"Category": {"name": "Category", "value": ""}}};
+    var answerIntent = {"name": "AnswerIntent", "slots": {"Answer": {"name": "Answer", "value": ""}}};
 
     var lambda = {
        "session": {
@@ -24,7 +26,7 @@ function BuildEvent(argv)
          },
          "attributes": {},
          "user": {
-           "userId": "amzn1.ask.account.AFLJ3RYNI3X6MQMX4KVH52CZKDSI6PMWCQWRBHSPJJPR2MKGDNJHW36XF2ET6I2BFUDRKH3SR2ACZ5VCRLXLGJFBTQGY4RNYZA763JED57USTK6F7IRYT6KR3XYO2ZTKK55OM6ID2WQXQKKXJCYMWXQ74YXREHVTQ3VUD5QHYBJTKHDDH5R4ALQAGIQKPFL52A3HQ377WNCCHYI"
+           "userId": "amzn1.ask.account.AFLJ4RYNI3X6MQMX4KVH52CZKDSI6PMWCQWRBHSPJJPR2MKGDNJHW36XF2ET6I2BFUDRKH3SR2ACZ5VCRLXLGJFBTQGY4RNYZA763JED57USTK6F7IRYT6KR3XYO2ZTKK55OM6ID2WQXQKKXJCYMWXQ74YXREHVTQ3VUD5QHYBJTKHDDH5R4ALQAGIQKPFL52A3HQ377WNCCHYI"
          },
          "new": true
        },
@@ -46,7 +48,7 @@ function BuildEvent(argv)
          },
          "attributes": {},
          "user": {
-           "userId": "amzn1.ask.account.AFLJ3RYNI3X6MQMX4KVH52CZKDSI6PMWCQWRBHSPJJPR2MKGDNJHW36XF2ET6I2BFUDRKH3SR2ACZ5VCRLXLGJFBTQGY4RNYZA763JED57USTK6F7IRYT6KR3XYO2ZTKK55OM6ID2WQXQKKXJCYMWXQ74YXREHVTQ3VUD5QHYBJTKHDDH5R4ALQAGIQKPFL52A3HQ377WNCCHYI"
+           "userId": "amzn1.ask.account.AFLJ4RYNI3X6MQMX4KVH52CZKDSI6PMWCQWRBHSPJJPR2MKGDNJHW36XF2ET6I2BFUDRKH3SR2ACZ5VCRLXLGJFBTQGY4RNYZA763JED57USTK6F7IRYT6KR3XYO2ZTKK55OM6ID2WQXQKKXJCYMWXQ74YXREHVTQ3VUD5QHYBJTKHDDH5R4ALQAGIQKPFL52A3HQ377WNCCHYI"
          },
          "new": true
        },
@@ -69,6 +71,16 @@ function BuildEvent(argv)
     {
         lambda.request.intent = practiceIntent;
         practiceIntent.slots.Category.value = (argv.length > 3) ? argv[3] : "";
+    }
+    else if (argv[2] == "test")
+    {
+        lambda.request.intent = testIntent;
+        testIntent.slots.Category.value = (argv.length > 3) ? argv[3] : "";
+    }
+    else if (argv[2] == "answer")
+    {
+        lambda.request.intent = answerIntent;
+        answerIntent.slots.Answer.value = (argv.length > 3) ? argv[3] : "";
     }
     else
     {

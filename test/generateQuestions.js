@@ -14,11 +14,11 @@ function CreateAdditionCards()
     {
         for (j = 0; j < 10; j++)
         {
-            addition.cards.push({question: (i + " plus " + j), answer: [(i+j).toString()]});
+            addition.cards.push({question: (i + " plus " + j), answers: [(i+j).toString()]});
         }
     }
 
-    console.log(JSON.stringify(addition));
+    console.log("module.exports = " + JSON.stringify(addition) + ";");
 }
 
 function CreateMinusCards()
@@ -31,11 +31,11 @@ function CreateMinusCards()
     {
         for (j = 0; j <= i; j++)
         {
-            minus.cards.push({question: (i + " minus " + j), answer: [(i-j).toString()]});
+            minus.cards.push({question: (i + " minus " + j), answers: [(i-j).toString()]});
         }
     }
 
-    console.log(JSON.stringify(minus));
+    console.log("module.exports = " + JSON.stringify(minus) + ";");
 }
 
 function CreateTimesCards()
@@ -49,11 +49,11 @@ function CreateTimesCards()
     {
         for (j = 0; j < 10; j++)
         {
-            times.cards.push({question: (i + " times " + j), answer: [(i*j).toString()]});
+            times.cards.push({question: (i + " times " + j), answers: [(i*j).toString()]});
         }
     }
 
-    console.log(JSON.stringify(times));
+    console.log("module.exports = " + JSON.stringify(times) + ";");
 }
 
 function CreateDivisionCards()
@@ -68,11 +68,11 @@ function CreateDivisionCards()
     {
         for (j = 1; j < 10; j++)
         {
-            division.cards.push({question: ((i*j) + " divided by " + j), answer: [i.toString()]});
+            division.cards.push({question: ((i*j) + " divided by " + j), answers: [i.toString()]});
         }
     }
 
-    console.log(JSON.stringify(division));
+    console.log("module.exports = " + JSON.stringify(division) + ";");
 }
 
 //CreateAdditionCards();

@@ -30,6 +30,7 @@ The user's state is stored in a DynamoDB table with the following columns:
                 has a `status` field which is `right`, `wrong`, or `undefined` storing how the user
                 has done when presented this question
 * `lastQuestion` - Index into the `questions` array indicating which was the last question asked
+* `mode` - Either `practice` or `test` depending on the user's mode
 * `practiceTimes` - A history of the best times during practice rounds.  This JSON object has fields
                     named `category:#` (e.g. `minus:20`) indicating the category and number of questions
 * `testScores` - A full history of the user's test scores
