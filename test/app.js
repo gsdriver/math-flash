@@ -14,15 +14,15 @@ catch(err) {
 function BuildEvent(argv)
 {
     // Templates that can fill in the intent
-    var practiceIntent = {"name": "PracticeIntent", "slots": {"Category": {"name": "Category", "value": ""}}};
-    var testIntent = {"name": "TestIntent", "slots": {"Category": {"name": "Category", "value": ""}}};
+    var practiceIntent = {"name": "PracticeIntent", "slots": {"Category": {"name": "Category", "value": ""}, "NumQuestion": {"name": "NumQuestion", "value": ""}}};
+    var testIntent = {"name": "TestIntent", "slots": {"Category": {"name": "Category", "value": ""}, "NumQuestion": {"name": "NumQuestion", "value": ""}}};
     var answerIntent = {"name": "AnswerIntent", "slots": {"Answer": {"name": "Answer", "value": ""}}};
 
     var lambda = {
        "session": {
          "sessionId": "SessionId.c88ec34d-28b0-46f6-a4c7-120d8fba8fa7",
          "application": {
-           "applicationId": "amzn1.ask.skill.8fb6e399-d431-4943-a797-7a6888e7c6ce"
+           "applicationId": "amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0"
          },
          "attributes": {},
          "user": {
@@ -44,7 +44,7 @@ function BuildEvent(argv)
        "session": {
          "sessionId": "SessionId.c88ec34d-28b0-46f6-a4c7-120d8fba8fa7",
          "application": {
-           "applicationId": "amzn1.ask.skill.8fb6e399-d431-4943-a797-7a6888e7c6ce"
+           "applicationId": "amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0"
          },
          "attributes": {},
          "user": {
@@ -71,11 +71,13 @@ function BuildEvent(argv)
     {
         lambda.request.intent = practiceIntent;
         practiceIntent.slots.Category.value = (argv.length > 3) ? argv[3] : "";
+        practiceIntent.slots.NumQuestion.value = (argv.length > 4) ? argv[4] : "";
     }
     else if (argv[2] == "test")
     {
         lambda.request.intent = testIntent;
         testIntent.slots.Category.value = (argv.length > 3) ? argv[3] : "";
+        testIntent.slots.NumQuestion.value = (argv.length > 4) ? argv[4] : "";
     }
     else if (argv[2] == "answer")
     {

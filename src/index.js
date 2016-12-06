@@ -26,8 +26,11 @@
 
 var AlexaSkill = require('./AlexaSkill');
 var storage = require('./storage');
+var config = require('./config');
 
-var APP_ID = undefined; //"amzn1.ask.skill.8fb6e399-d431-4943-a797-7a6888e7c6ce";
+var APP_ID = "amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0";
+
+const NUMBER_OF_QUESTIONS = 5;
 
 var FlashTest = function () {
     AlexaSkill.call(this, APP_ID);
@@ -232,6 +235,11 @@ function ListQuizzes()
 
 function PickQuestions(category, numberOfQuestions)
 {
+    var categoryMapping = {
+        "plus": "plus", "add": "plus", "addition": "plus", "sum": "plus",
+        "minus": "minus", "subtract": "minus", "subtraction": "minus",
+        "times": "times", "multiply": "times", "multiplication": "times",
+        "divide": "divide", "divides": "divide", "division": "divide"};
     var questions = [];
     var allQuestions;
     var picked = [];
@@ -240,7 +248,7 @@ function PickQuestions(category, numberOfQuestions)
 
     // Find the right JSON array
     try {
-        allQuestions = require('../flashcards/' + category);
+        allQuestions = require(config.flashDir + categoryMapping[category]);
     } catch(error) {
         // File not found
         console.log("Couldn't load cateogry " + category);
@@ -314,6 +322,7 @@ function HandleTestIntent(intent, session, response, test)
     // The user is starting a practice round - they need to specify a category that they would like to play
     var categorySlot = intent.slots.Category;
     var error;
+    var numberOfQuestions;
 
     if (!categorySlot || !categorySlot.value)
     {
@@ -322,10 +331,27 @@ function HandleTestIntent(intent, session, response, test)
     }
     else
     {
-        // OK, let's pick out 20 random questions and start the quiz!
+        // OK, let's pick out random questions and start the quiz!
         // Since we have to store a timer, we will save the current time in the session
         storage.loadUserData(session, (userData) => {
-            var questions = PickQuestions(categorySlot.value, 3);
+            // How many questions?
+            var numberOfQuestions;
+
+            if (intent.slots.NumQuestion && intent.slots.NumQuestion.value)
+            {
+                numberOfQuestions = parseInt(intent.slots.NumQuestion.value);
+                if (isNaN(numberOfQuestions))
+                {
+                    // Default value
+                    numberOfQuestions = NUMBER_OF_QUESTIONS;
+                }
+            }
+            else
+            {
+                numberOfQuestions = NUMBER_OF_QUESTIONS;
+            }
+
+            var questions = PickQuestions(categorySlot.value, numberOfQuestions);
             if (!questions)
             {
                 SendAlexaResponse("I had trouble starting a quiz for " + categorySlot.value, null, null, null, response);

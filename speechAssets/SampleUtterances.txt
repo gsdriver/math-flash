@@ -1,0 +1,31 @@
+PracticeIntent practice {Category}
+PracticeIntent practice in {Category}
+PracticeIntent {Category} practice
+PracticeIntent practice round {Category}
+PracticeIntent practice round in {Category}
+PracticeIntent {Category} practice round
+PracticeIntent start a {Category} practice round
+PracticeIntent start an {Category} practice round
+PracticeIntent practice {Category} with {NumQuestion} questions
+PracticeIntent practice in {Category} with {NumQuestion} questions
+PracticeIntent {Category} practice with {NumQuestion} questions
+PracticeIntent practice round {Category} with {NumQuestion} questions
+PracticeIntent practice round in {Category} with {NumQuestion} questions
+PracticeIntent {Category} practice round with {NumQuestion} questions
+PracticeIntent start a {Category} practice round with {NumQuestion} questions
+PracticeIntent start an {Category} practice round with {NumQuestion} questions
+
+TestIntent take a test in {Category}
+TestIntent start {Category} test
+TestIntent start a {Category} test
+TestIntent start an {Category} test
+TestIntent take a test in {Category} with {NumQuestion} questions
+TestIntent start {Category} test with {NumQuestion} questions
+TestIntent start a {Category} test with {NumQuestion} questions
+TestIntent start an {Category} test with {NumQuestion} questions
+
+AnswerIntent the answer is {Answer}
+AnswerIntent my answer is {Answer}
+AnswerIntent is it {Answer}
+AnswerIntent {Answer} is my answer
+AnswerIntent {Answer}
