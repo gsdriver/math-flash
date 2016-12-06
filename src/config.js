@@ -1,7 +1,7 @@
 var config = {};
 
 // Local host settings
-config.runDBLocal = false;
-config.flashDir = './flashcards/';
+config.runDBLocal = true;
+config.flashDir = '../flashcards/';
 
 module.exports = config;
