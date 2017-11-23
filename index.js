@@ -26,7 +26,6 @@
 
 const AWS = require('aws-sdk');
 const Alexa = require('alexa-sdk');
-const storage = require('./storage');
 
 const APP_ID = 'amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0';
 const NUMBER_OF_QUESTIONS = 5;
@@ -47,92 +46,91 @@ const handlers = {
     emitResponse(this.emit, null, null, speechText, repromptText);
   },
   'SessionEndedRequest': function() {
-    saveState(this.event.session.user.userId, this.attributes);
+    emitResponse(this.emit, null, 'Goodbye');
   },
   // Practice Intent
   'PracticeIntent': function() {
-    handleTestIntent(this.emit, this.event.request.intent, this.event.session, false);
+    handleTestIntent(this.emit, this.event.request.intent, this.event.session,
+          this.attributes, false);
   },
   // Test Intent
   'TestIntent': function() {
-    handleTestIntent(this.emit, this.event.request.intent, this.event.session, true);
+    handleTestIntent(this.emit, this.event.request.intent, this.event.session,
+          this.attributes, true);
   },
   // Answer intent
   'AnswerIntent': function() {
     // Get the answer and compare to the question asked
-    const answerSlot = intent.slots.Answer;
+    const answerSlot = this.event.request.intent.slots.Answer;
 
     if (!answerSlot || !answerSlot.value) {
       emitResponse(this.emit, 'I\'m sorry, I didn\'t understand your answer. Please try again.');
     } else {
-      // Get the correct answer from storage (or the session) and compare
+      // Compare the correct answer
       let speechResponse = '';
 
-      storage.loadUserData(session, (userData) => {
-        // Let's make sure they are in a practice round or test
-        if (((userData.mode != 'practice') && (userData.mode != 'test')) ||
-          (userData.questions.length == 0) ||
-          ((userData.lastQuestion == -1) || (userData.lastQuestion >= userData.questions.length))) {
-          // No, this is not valid
-          emitResponse(this.emit, 'Please say Practice to start a practice round or Test to start a test.');
-          return;
+      // Let's make sure they are in a practice round or test
+      if (((this.attributes.mode !== 'practice') && (this.attributes.mode !== 'test')) ||
+        (this.attributes.questions.length == 0) ||
+        ((this.attributes.lastQuestion === -1) ||
+        (this.attributes.lastQuestion >= this.attributes.questions.length))) {
+        // No, this is not valid
+        emitResponse(this.emit, 'Please say Practice to start a practice round or Test to start a test.');
+        return;
+      }
+
+      const correctAnswers = this.attributes.questions[this.attributes.lastQuestion].answers;
+      let correct = false;
+
+      correctAnswers.forEach((answer) => {
+        if (answer == answerSlot.value) {
+          correct = true;
         }
-
-        const correctAnswers = userData.questions[userData.lastQuestion].answers;
-        let correct = false;
-
-        correctAnswers.forEach((answer) => {
-          if (answer == intent.slots.Answer.value) {
-            correct = true;
-          }
-        });
-
-        // Did we get it?
-        if (!correct) {
-          speechResponse += 'Sorry, ' + intent.slots.Answer.value + ' was incorrect. The correct answer is ' + correctAnswers[0] + '.';
-          userData.questions[userData.lastQuestion].status = 'wrong';
-        } else {
-          speechResponse += 'That\'s right!';
-          userData.questions[userData.lastQuestion].status = 'right';
-        }
-
-        // Get the next question - we may have to loop back through the list
-        userData.lastQuestion = GetNextQuestion(userData.questions, userData.lastQuestion, (userData.mode == 'practice'));
-        userData.save((err) => {
-          if (userData.lastQuestion != -1) {
-            // OK, let's ask this one
-            speechResponse += ' Next question ... ' + userData.questions[userData.lastQuestion].question;
-            emitResponse(this.emit, null, null, speechResponse,
-                    userData.questions[userData.lastQuestion].question);
-          } else {
-            // They are done - the messaging differs between practice and test
-            if (userData.mode == 'practice') {
-              const completeTime = Math.floor((Date.now() - userData.startTime) / 1000);
-
-              speechResponse += ' Congratulations, you are done with the practice round. It took ';
-              if (completeTime > 60) {
-                speechResponse += (Math.floor(completeTime / 60) + ' minutes and ');
-              }
-              speechResponse += ((completeTime % 60) + ' seconds to complete.');
-            } else {
-              let numCorrect = 0;
-
-              userData.questions.forEach((question) => {
-                if (question.status == 'right') {
-                  numCorrect++;
-                }
-              });
-
-              // Tell them how many they got correct - time doesn't matter
-              speechResponse += ' You finished the test with ';
-              speechResponse += (numCorrect + ' correct answers out of ');
-              speechResponse += (userData.questions.length + ' questions asked.');
-            }
-
-            emitResponse(this.emit, null, speechResponse, null, null);
-          }
-        });
       });
+
+      // Did we get it?
+      if (!correct) {
+        speechResponse += 'Sorry, ' + answerSlot.value + ' was incorrect. The correct answer is ' + correctAnswers[0] + '.';
+        this.attributes.questions[this.attributes.lastQuestion].status = 'wrong';
+      } else {
+        speechResponse += 'That\'s right!';
+        this.attributes.questions[this.attributes.lastQuestion].status = 'right';
+      }
+
+      // Get the next question - we may have to loop back through the list
+      this.attributes.lastQuestion = GetNextQuestion(this.attributes.questions, this.attributes.lastQuestion, (this.attributes.mode == 'practice'));
+      if (this.attributes.lastQuestion != -1) {
+        // OK, let's ask this one
+        speechResponse += ' Next question ... ' + this.attributes.questions[this.attributes.lastQuestion].question;
+        emitResponse(this.emit, null, null, speechResponse,
+                this.attributes.questions[this.attributes.lastQuestion].question);
+      } else {
+        // They are done - the messaging differs between practice and test
+        if (this.attributes.mode == 'practice') {
+          const completeTime = Math.floor((Date.now() - this.attributes.startTime) / 1000);
+
+          speechResponse += ' Congratulations, you are done with the practice round. It took ';
+          if (completeTime > 60) {
+            speechResponse += (Math.floor(completeTime / 60) + ' minutes and ');
+          }
+          speechResponse += ((completeTime % 60) + ' seconds to complete.');
+        } else {
+          let numCorrect = 0;
+
+          this.attributes.questions.forEach((question) => {
+            if (question.status == 'right') {
+              numCorrect++;
+            }
+          });
+
+          // Tell them how many they got correct - time doesn't matter
+          speechResponse += ' You finished the test with ';
+          speechResponse += (numCorrect + ' correct answers out of ');
+          speechResponse += (this.attributes.questions.length + ' questions asked.');
+        }
+
+        emitResponse(this.emit, null, speechResponse, null, null);
+      }
     }
   },
   // Stop intent
@@ -150,9 +148,7 @@ const handlers = {
     emitResponse(this.emit, null, null, speechText, repromptText);
   },
   'Unhandled': function() {
-    const res = require('./' + this.event.request.locale + '/resources');
-    emitResponse(this.emit, null, null,
-            res.strings.UNKNOWN_INTENT, res.strings.UNKNOWN_INTENT_REPROMPT);
+    emitResponse(this.emit, null, null, 'Sorry, I didn\'t get that. Try saying help.', 'Try saying help.');
   },
 };
 
@@ -189,7 +185,7 @@ function pickQuestions(category, numberOfQuestions) {
 
   // Find the right JSON array
   try {
-    allQuestions = require('../flashcards/' + categoryMapping[category]);
+    allQuestions = require('./flashcards/' + categoryMapping[category]);
   } catch(error) {
     // File not found
     console.log('Couldn\'t load cateogry ' + category);
@@ -248,7 +244,7 @@ function GetNextQuestion(questions, lastQuestion, practiceRound) {
   return nextQuestion;
 }
 
-function handleTestIntent(emit, intent, session, test) {
+function handleTestIntent(emit, intent, session, attributes, test) {
   // The user is starting a practice round
   // they need to specify a category that they would like to play
   const categorySlot = intent.slots.Category;
@@ -260,36 +256,31 @@ function handleTestIntent(emit, intent, session, test) {
   } else {
     // OK, let's pick out random questions and start the quiz!
     // Since we have to store a timer, we will save the current time in the session
-    storage.loadUserData(session, (userData) => {
-      // How many questions?
-      let numberOfQuestions;
+    let numberOfQuestions;
 
-      if (intent.slots.NumQuestion && intent.slots.NumQuestion.value) {
-        numberOfQuestions = parseInt(intent.slots.NumQuestion.value);
-        if (isNaN(numberOfQuestions)) {
-          // Default value
-          numberOfQuestions = NUMBER_OF_QUESTIONS;
-        }
-      } else {
+    if (intent.slots.NumQuestion && intent.slots.NumQuestion.value) {
+      numberOfQuestions = parseInt(intent.slots.NumQuestion.value);
+      if (isNaN(numberOfQuestions)) {
+        // Default value
         numberOfQuestions = NUMBER_OF_QUESTIONS;
       }
+    } else {
+      numberOfQuestions = NUMBER_OF_QUESTIONS;
+    }
 
-      const questions = pickQuestions(categorySlot.value, numberOfQuestions);
-      if (!questions) {
-        emitResponse(emit, 'I had trouble starting a quiz for ' + categorySlot.value);
-      } else {
-        // Save the user data - we will start with the first question
-        userData.questions = questions;
-        userData.lastQuestion = 0;
-        userData.mode = ((test) ? 'test' : 'practice');
-        userData.startTime = Date.now();
+    const questions = pickQuestions(categorySlot.value, numberOfQuestions);
+    if (!questions) {
+      emitResponse(emit, 'I had trouble starting a quiz for ' + categorySlot.value);
+    } else {
+      // Add these to the attributes
+      attributes.questions = questions;
+      attributes.lastQuestion = 0;
+      attributes.mode = ((test) ? 'test' : 'practice');
+      attributes.startTime = Date.now();
 
-        userData.save((err) => {
-          // We have the questions, now ask the first one (and mark that we've asked it)
-          emitResponse(emit, null, null, questions[0].question, questions[0].question);
-        });
-      }
-    });
+      // We have the questions, now ask the first one (and mark that we've asked it)
+      emitResponse(emit, null, null, questions[0].question, questions[0].question);
+    }
   }
 }
 
@@ -298,7 +289,7 @@ exports.handler = function(event, context) {
   const alexa = Alexa.handler(event, context);
 
   alexa.appId = APP_ID;
-  alexa.dynamoDBTableName = 'MathFlashCardsUserData';
+  alexa.dynamoDBTableName = 'FlashCardsUserData';
   alexa.registerHandlers(handlers);
   alexa.execute();
 };
