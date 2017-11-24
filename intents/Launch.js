@@ -8,10 +8,23 @@ const utils = require('../utils');
 
 module.exports = {
   handleIntent: function() {
-    const speechText = 'Welcome to Math Flash cards. You can either practice or take a test ... Now, what can I help you with?';
-    const repromptText = 'For instructions on what you can say, please say help me.';
+    let speech;
+    let reprompt;
 
-    // I don't care if this succeeds or not
-    utils.emitResponse(this.emit, null, null, speechText, repromptText);
+    // Do we have a current player?  If so, welcome them back with an option
+    // to switch to another player. Otherwise, ask for their name
+    if (this.attributes.lastPlayer) {
+      // Welcome back!
+      speech = this.t('LAUNCH_WELCOMEBACK').replace('{0}', this.attributes.lastPlayer).replace('{1}', this.attributes.lastPlayer);
+      reprompt = this.t('LAUNCH_WELCOMEBACK_REPROMPT');
+      this.handler.state = '';
+      delete this.attributes.STATE;
+    } else {
+      speech = this.t('LAUNCH_NEWPLAYER');
+      reprompt = this.t('LAUNCH_NEWPLAYER_REPROMPT');
+      this.handler.state = 'SAYNAME';
+    }
+
+    utils.emitResponse(this.emit, null, null, speech, reprompt);
   },
 };

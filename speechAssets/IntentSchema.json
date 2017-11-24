@@ -36,6 +36,15 @@
       ]
     },
     {
+      "intent": "NameIntent",
+      "slots": [
+        {
+          "name": "Name",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     },
     {

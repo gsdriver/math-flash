@@ -7,6 +7,7 @@ AWS.config.update({region: 'us-east-1'});
 const dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 const sessionId = "SessionId.c88ec34d-28b0-46f6-a4c7-120d8fba8fb4";
+const USERID = 'not-amazon';
 
 function BuildEvent(argv)
 {
@@ -14,6 +15,7 @@ function BuildEvent(argv)
   var practiceIntent = {'name': 'PracticeIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}, 'NumQuestion': {'name': 'NumQuestion', 'value': ''}}};
   var testIntent = {'name': 'TestIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}, 'NumQuestion': {'name': 'NumQuestion', 'value': ''}}};
   var answerIntent = {'name': 'AnswerIntent', 'slots': {'Answer': {'name': 'Answer', 'value': ''}}};
+  var nameIntent = {'name': 'NameIntent', 'slots': {'Name': {'name': 'Name', 'value': ''}}};
   var help = {'name': 'AMAZON.HelpIntent', 'slots': {}};
   var stop = {'name': 'AMAZON.StopIntent', 'slots': {}};
   var cancel = {'name': 'AMAZON.CancelIntent', 'slots': {}};
@@ -27,7 +29,7 @@ function BuildEvent(argv)
       },
       "attributes": {},
       "user": {
-        "userId": "not-amazon",
+        "userId": USERID,
       },
       "new": false
     },
@@ -49,7 +51,7 @@ function BuildEvent(argv)
       },
       "attributes": {},
       "user": {
-        "userId": "not-amazon",
+        "userId": USERID,
       },
       "new": true
     },
@@ -69,21 +71,9 @@ function BuildEvent(argv)
                      "application": {
                        "applicationId": "amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0"
                      },
-                     "attributes": {
-                       "highScore": {
-                         "spinsEuropean": 2,
-                         "currentAmerican": 1260,
-                         "currentEuropean": 1020,
-                         "spinsAmerican": 14,
-                         "highAmerican": 1800,
-                         "highEuropean": 1020,
-                         "timestamp": 1496537080780
-                       },
-                       "bankroll": 1260,
-                       "doubleZeroWheel": true
-                     },
+                     "attributes": {},
                      "user": {
-                       "userId": "not-amazon",
+                       "userId": USERID,
                      },
                      "new": false
                    },
@@ -123,6 +113,9 @@ function BuildEvent(argv)
   } else if (argv[2] == 'answer') {
     lambda.request.intent = answerIntent;
     answerIntent.slots.Answer.value = (argv.length > 3) ? argv[3] : '';
+  } else if (argv[2] == 'name') {
+    lambda.request.intent = nameIntent;
+    nameIntent.slots.Name.value = (argv.length > 3) ? argv[3] : '';
   } else if (argv[2] == 'exit') {
     return endEvent;
   } else if (argv[2] == 'launch') {
@@ -177,7 +170,7 @@ if ((process.argv.length == 3) && (process.argv[2] == 'clear')) {
   const fs = require('fs');
 
   // Clear is a special case - delete this entry from the DB and delete the attributes.txt file
-  dynamodb.deleteItem({TableName: 'RouletteWheel', Key: { userId: {S: 'not-amazon'}}}, function (error, data) {
+  dynamodb.deleteItem({TableName: 'FlashCardsUserData', Key: { userId: {S: USERID}}}, function (error, data) {
     console.log("Deleted " + error);
     if (fs.existsSync(attributeFile)) {
       fs.unlinkSync(attributeFile);

@@ -29,3 +29,8 @@ AnswerIntent my answer is {Answer}
 AnswerIntent is it {Answer}
 AnswerIntent {Answer} is my answer
 AnswerIntent {Answer}
+
+NameIntent my name is {Name}
+NameIntent I am {Name}
+NameIntent I'm {Name}
+NameIntent {Name}

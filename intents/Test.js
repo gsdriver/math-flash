@@ -22,6 +22,7 @@ module.exports = {
 function startTest(emit, intent, session, attributes, test) {
   // The user is starting a practice round
   // they need to specify a category that they would like to play
+  const player = attributes[attributes.lastPlayer];
   const categorySlot = intent.slots.Category;
   let error;
 
@@ -48,10 +49,10 @@ function startTest(emit, intent, session, attributes, test) {
       utils.emitResponse(emit, 'I had trouble starting a quiz for ' + categorySlot.value);
     } else {
       // Add these to the attributes
-      attributes.questions = questions;
-      attributes.lastQuestion = 0;
-      attributes.mode = ((test) ? 'test' : 'practice');
-      attributes.startTime = Date.now();
+      player.questions = questions;
+      player.lastQuestion = 0;
+      player.mode = ((test) ? 'test' : 'practice');
+      player.startTime = Date.now();
 
       // We have the questions, now ask the first one (and mark that we've asked it)
       utils.emitResponse(emit, null, null, questions[0].question, questions[0].question);
