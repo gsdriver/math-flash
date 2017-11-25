@@ -32,6 +32,9 @@ const resources = {
       // From Test.js
       'TEST_UNKNOWN_QUIZ': 'I\'m sorry, I didn\'t catch the quiz you would like to practice.  You can say {0}',
       'TEST_CANT_START_QUIZ': 'I had trouble starting a quiz for {0}',
+      // From Change.js
+      'CHANGE_SAYNANE': 'What is your name?',
+      'CHANGE_SAYNANE_REPROMPT': 'What is your name?',
     },
   },
 };

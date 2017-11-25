@@ -10,6 +10,7 @@ const Answer = require('./intents/Answer');
 const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const Name = require('./intents/Name');
+const Change = require('./intents/Change');
 const utils = require('./utils');
 const resources = require('./resources');
 
@@ -45,6 +46,7 @@ const handlers = {
   'PracticeIntent': Test.handlePracticeIntent,
   'TestIntent': Test.handleTestIntent,
   'AnswerIntent': Answer.handleIntent,
+  'ChangePlayerIntent': Change.handleIntent,
   'AMAZON.StopIntent': Exit.handleIntent,
   'AMAZON.CancelIntent': Exit.handleIntent,
   'AMAZON.HelpIntent': Help.handleIntent,

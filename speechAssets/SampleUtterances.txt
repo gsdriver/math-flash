@@ -34,3 +34,6 @@ NameIntent my name is {Name}
 NameIntent I am {Name}
 NameIntent I'm {Name}
 NameIntent {Name}
+
+ChangePlayerIntent Change player
+ChangePlayerIntent Change the player

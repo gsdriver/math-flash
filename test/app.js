@@ -16,6 +16,7 @@ function BuildEvent(argv)
   var testIntent = {'name': 'TestIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}, 'NumQuestion': {'name': 'NumQuestion', 'value': ''}}};
   var answerIntent = {'name': 'AnswerIntent', 'slots': {'Answer': {'name': 'Answer', 'value': ''}}};
   var nameIntent = {'name': 'NameIntent', 'slots': {'Name': {'name': 'Name', 'value': ''}}};
+  var changeIntent = {'name': 'ChangePlayerIntent', 'slots': {}};
   var help = {'name': 'AMAZON.HelpIntent', 'slots': {}};
   var stop = {'name': 'AMAZON.StopIntent', 'slots': {}};
   var cancel = {'name': 'AMAZON.CancelIntent', 'slots': {}};
@@ -116,6 +117,8 @@ function BuildEvent(argv)
   } else if (argv[2] == 'name') {
     lambda.request.intent = nameIntent;
     nameIntent.slots.Name.value = (argv.length > 3) ? argv[3] : '';
+  } else if (argv[2] == 'change') {
+    lambda.request.intent = changeIntent;
   } else if (argv[2] == 'exit') {
     return endEvent;
   } else if (argv[2] == 'launch') {
