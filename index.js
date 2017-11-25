@@ -11,10 +11,30 @@ const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const Name = require('./intents/Name');
 const Change = require('./intents/Change');
+const Confirm = require('./intents/Confirm');
 const utils = require('./utils');
 const resources = require('./resources');
 
 const APP_ID = 'amzn1.ask.skill.8a9b50de-2dce-49d0-88b1-bed45e7f10b0';
+
+const confirmNameHandlers = Alexa.CreateStateHandler('CONFIRMNAME', {
+  'NewSession': function() {
+    this.handler.state = '';
+    delete this.attributes.STATE;
+    this.emitWithState('NewSession');
+  },
+  'AMAZON.YesIntent': Confirm.handleYesIntent,
+  'AMAZON.NoIntent': Confirm.handleNoIntent,
+  'AMAZON.HelpIntent': Help.handleIntent,
+  'AMAZON.StopIntent': Exit.handleIntent,
+  'AMAZON.CancelIntent': Exit.handleIntent,
+  'SessionEndedRequest': function() {
+    utils.emitResponse(this.emit, null, 'Goodbye');
+  },
+  'Unhandled': function() {
+    utils.emitResponse(this.emit, null, null, this.t('SAYNAME_UNHANDLED_INTENT'), this.t('SAYNAME_UNHANDLED_INTENT_REPROMPT'));
+  },
+});
 
 const sayNameHandlers = Alexa.CreateStateHandler('SAYNAME', {
   'NewSession': function() {
@@ -65,6 +85,6 @@ exports.handler = function(event, context) {
   alexa.appId = APP_ID;
   alexa.dynamoDBTableName = 'FlashCardsUserData';
   alexa.resources = resources.languageStrings;
-  alexa.registerHandlers(handlers, sayNameHandlers);
+  alexa.registerHandlers(handlers, sayNameHandlers, confirmNameHandlers);
   alexa.execute();
 };

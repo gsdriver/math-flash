@@ -17,6 +17,8 @@ function BuildEvent(argv)
   var answerIntent = {'name': 'AnswerIntent', 'slots': {'Answer': {'name': 'Answer', 'value': ''}}};
   var nameIntent = {'name': 'NameIntent', 'slots': {'Name': {'name': 'Name', 'value': ''}}};
   var changeIntent = {'name': 'ChangePlayerIntent', 'slots': {}};
+  var yes = {'name': 'AMAZON.YesIntent', 'slots': {}};
+  var no = {'name': 'AMAZON.NoIntent', 'slots': {}};
   var help = {'name': 'AMAZON.HelpIntent', 'slots': {}};
   var stop = {'name': 'AMAZON.StopIntent', 'slots': {}};
   var cancel = {'name': 'AMAZON.CancelIntent', 'slots': {}};
@@ -123,6 +125,10 @@ function BuildEvent(argv)
     return endEvent;
   } else if (argv[2] == 'launch') {
     return openEvent;
+  } else if (argv[2] == 'yes') {
+    lambda.request.intent = yes;
+  } else if (argv[2] == 'no') {
+    lambda.request.intent = no;
   } else if (argv[2] == 'help') {
     lambda.request.intent = help;
   } else if (argv[2] == 'stop') {

@@ -16,8 +16,11 @@ const resources = {
       'LAUNCH_ERROR': 'There was an error launching Private Tutor. Please try again later.',
       // From Name.js
       'NAME_NONAME': 'Sorry, I didn\'t catch your name. Please try saying your name again.',
-      'NAME_WELCOME': 'Welcome {0}. You can either practice or take a test ... Now, what can I help you with?',
-      'NAME_WELCOME_REPROMPT': 'For instructions on what you can say, please say help me.',
+      'NAME_WELCOME': 'I heard the name {0}. Is this correct?',
+      'NAME_WELCOME_REPROMPT': 'Say yes or no.',
+      // From Confirm.js
+      'CONFIRM_WELCOME': 'Welcome {0}. You can either practice or take a test ... Now, what can I help you with?',
+      'CONFIRM_WELCOME_REPROMPT': 'For instructions on what you can say, please say help me.',
       // From Exit.js
       'EXIT_GOODBYE': 'Goodbye.',
       // From Answer.js
