@@ -25,6 +25,15 @@ module.exports = {
       this.handler.state = 'SAYNAME';
     }
 
-    utils.emitResponse(this.emit, null, null, speech, reprompt);
+    // Read available categories
+    utils.readCategories((err, categories) => {
+      if (err) {
+        // Oops - something went wrong
+        utils.emitResponse(this.emit, null, this.t('LAUNCH_ERROR'));
+      } else {
+        this.attributes.categories = categories;
+        utils.emitResponse(this.emit, null, null, speech, reprompt);
+      }
+    });
   },
 };

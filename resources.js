@@ -13,6 +13,7 @@ const resources = {
       'LAUNCH_WELCOMEBACK_REPROMPT': 'For instructions on what you can say, please say help me.',
       'LAUNCH_NEWPLAYER': 'Welcome to Private Tutor. What is your name?',
       'LAUNCH_NEWPALYER_REPROMPT': 'What is your name?',
+      'LAUNCH_ERROR': 'There was an error launching Private Tutor. Please try again later.',
       // From Name.js
       'NAME_NONAME': 'Sorry, I didn\'t catch your name. Please try saying your name again.',
       'NAME_WELCOME': 'Welcome {0}. You can either practice or take a test ... Now, what can I help you with?',
@@ -28,6 +29,9 @@ const resources = {
       'ANSWER_COMPLETED_MINUTES': ' Congratulations, you are done with the practice round. It took {1} minutes and {0} seconds to complete.',
       'ANSWER_COMPLETED_NO_MINUTES': ' Congratulations, you are done with the practice round. It took {0} seconds to complete.',
       'ANSWER_COMPLETED_TEST': ' You finished the test with {0} correct answers out of {1} questions asked.',
+      // From Test.js
+      'TEST_UNKNOWN_QUIZ': 'I\'m sorry, I didn\'t catch the quiz you would like to practice.  You can say {0}',
+      'TEST_CANT_START_QUIZ': 'I had trouble starting a quiz for {0}',
     },
   },
 };
