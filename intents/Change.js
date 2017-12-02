@@ -9,6 +9,6 @@ const utils = require('../utils');
 module.exports = {
   handleIntent: function() {
     this.handler.state = 'SAYNAME';
-    utils.emitResponse(this.emit, null, null, this.t('CHANGE_SAYNANE'), this.t('CHANGE_SAYNANE_REPROMPT'));
+    utils.emitResponse.call(this, this.t('CHANGE_SAYNANE'), this.t('CHANGE_SAYNANE_REPROMPT'));
   },
 };

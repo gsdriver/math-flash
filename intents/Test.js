@@ -26,7 +26,7 @@ const startTest = function(test) {
 
   if (!categorySlot || !categorySlot.value) {
     error = this.t('TEST_UNKNOWN_QUIZ').replace('{0}', listQuizzes(this.attributes));
-    utils.emitResponse(this.emit, error);
+    utils.emitResponse.call(this, error);
   } else {
     // OK, let's pick out random questions and start the quiz!
     // Since we have to store a timer, we will save the current time in the session
@@ -41,7 +41,7 @@ const startTest = function(test) {
 
     pickQuestions.call(this, categorySlot.value, numberOfQuestions, (err, questions) => {
       if (!questions) {
-        utils.emitResponse(this.emit, this.t('TEST_CANT_START_QUIZ').replace('{0}', categorySlot.value));
+        utils.emitResponse.call(this, this.t('TEST_CANT_START_QUIZ').replace('{0}', categorySlot.value));
       } else {
         // Add these to the attributes
         player.questions = questions;
@@ -50,7 +50,7 @@ const startTest = function(test) {
         player.startTime = Date.now();
 
         // We have the questions, now ask the first one (and mark that we've asked it)
-        utils.emitResponse(this.emit, null, null, questions[0].question, questions[0].question);
+        utils.emitResponse.call(this, questions[0].question, questions[0].question);
       }
     });
   }

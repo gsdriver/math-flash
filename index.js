@@ -29,10 +29,10 @@ const confirmNameHandlers = Alexa.CreateStateHandler('CONFIRMNAME', {
   'AMAZON.StopIntent': Exit.handleIntent,
   'AMAZON.CancelIntent': Exit.handleIntent,
   'SessionEndedRequest': function() {
-    utils.emitResponse(this.emit, null, 'Goodbye');
+    utils.emitResponse.call(this, this.t('EXIT_GOODBYE'));
   },
   'Unhandled': function() {
-    utils.emitResponse(this.emit, null, null, this.t('SAYNAME_UNHANDLED_INTENT'), this.t('SAYNAME_UNHANDLED_INTENT_REPROMPT'));
+    utils.emitResponse.call(this, this.t('SAYNAME_UNHANDLED_INTENT'), this.t('SAYNAME_UNHANDLED_INTENT_REPROMPT'));
   },
 });
 
@@ -47,10 +47,10 @@ const sayNameHandlers = Alexa.CreateStateHandler('SAYNAME', {
   'AMAZON.StopIntent': Exit.handleIntent,
   'AMAZON.CancelIntent': Exit.handleIntent,
   'SessionEndedRequest': function() {
-    utils.emitResponse(this.emit, null, 'Goodbye');
+    utils.emitResponse.call(this, this.t('EXIT_GOODBYE'));
   },
   'Unhandled': function() {
-    utils.emitResponse(this.emit, null, null, this.t('SAYNAME_UNHANDLED_INTENT'), this.t('SAYNAME_UNHANDLED_INTENT_REPROMPT'));
+    utils.emitResponse.call(this, this.t('SAYNAME_UNHANDLED_INTENT'), this.t('SAYNAME_UNHANDLED_INTENT_REPROMPT'));
   },
 });
 
@@ -71,10 +71,10 @@ const handlers = {
   'AMAZON.CancelIntent': Exit.handleIntent,
   'AMAZON.HelpIntent': Help.handleIntent,
   'SessionEndedRequest': function() {
-    utils.emitResponse(this.emit, null, 'Goodbye');
+    utils.emitResponse.call(this, this.t('EXIT_GOODBYE'));
   },
   'Unhandled': function() {
-    utils.emitResponse(this.emit, null, null, this.t('UNHANDLED_INTENT'), this.t('UNHANDLED_INTENT_REPROMPT'));
+    utils.emitResponse.call(this, this.t('UNHANDLED_INTENT'), this.t('UNHANDLED_INTENT_REPROMPT'));
   },
 };
 

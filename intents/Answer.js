@@ -13,7 +13,7 @@ module.exports = {
     const player = this.attributes[this.attributes.lastPlayer];
 
     if (!answerSlot || !answerSlot.value) {
-      utils.emitResponse(this.emit, this.t('ANSWER_NOANSWER'));
+      utils.emitResponse.call(this, this.t('ANSWER_NOANSWER'));
     } else {
       // Compare the correct answer
       let speechResponse = '';
@@ -24,7 +24,7 @@ module.exports = {
         ((player.lastQuestion === -1) ||
         (player.lastQuestion >= player.questions.length))) {
         // No, this is not valid
-        utils.emitResponse(this.emit, this.t('ANSWER_INVALID_MODE'));
+        utils.emitResponse.call(this, this.t('ANSWER_INVALID_MODE'));
         return;
       }
 
@@ -51,8 +51,7 @@ module.exports = {
       if (player.lastQuestion != -1) {
         // OK, let's ask this one
         speechResponse += this.t('ANSWER_NEXT_QUESTION').replace('{0}', player.questions[player.lastQuestion].question);
-        utils.emitResponse(this.emit, null, null, speechResponse,
-                player.questions[player.lastQuestion].question);
+        utils.emitResponse.call(this, speechResponse, player.questions[player.lastQuestion].question);
       } else {
         // They are done - the messaging differs between practice and test
         if (player.mode == 'practice') {
@@ -73,7 +72,7 @@ module.exports = {
           speechResponse += this.t('ANSWER_COMPLETED_TEST').replace('{0}', numCorrect).replace('{1}', player.questions.length);
         }
 
-        utils.emitResponse(this.emit, null, speechResponse, null, null);
+        utils.emitResponse.call(this, speechResponse);
       }
     }
   },

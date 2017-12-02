@@ -29,10 +29,10 @@ module.exports = {
     utils.readCategories((err, categories) => {
       if (err) {
         // Oops - something went wrong
-        utils.emitResponse(this.emit, null, this.t('LAUNCH_ERROR'));
+        utils.emitResponse.call(this, this.t('LAUNCH_ERROR'));
       } else {
         this.attributes.categories = categories;
-        utils.emitResponse(this.emit, null, null, speech, reprompt);
+        utils.emitResponse.call(this, speech, reprompt);
       }
     });
   },

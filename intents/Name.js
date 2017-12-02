@@ -12,14 +12,14 @@ module.exports = {
 
     // We need a name
     if (!nameSlot || !nameSlot.value) {
-      utils.emitResponse(this.emit, this.t('NAME_NONAME'));
+      utils.emitResponse.call(this, this.t('NAME_NONAME'));
     } else {
       // Confirm that this is their name
       const speech = this.t('NAME_WELCOME').replace('{0}', nameSlot.value);
       const reprompt = this.t('NAME_WELCOME_REPROMPT');
       this.handler.state = 'CONFIRMNAME';
       this.attributes.nameToConfirm = nameSlot.value;
-      utils.emitResponse(this.emit, null, null, speech, reprompt);
+      utils.emitResponse.call(this, speech, reprompt);
     }
   },
 };

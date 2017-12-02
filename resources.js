@@ -38,6 +38,8 @@ const resources = {
       // From Change.js
       'CHANGE_SAYNANE': 'What is your name?',
       'CHANGE_SAYNANE_REPROMPT': 'What is your name?',
+      // From utils.js
+      'SPEECH_ERROR': 'What else can I help with?',
     },
   },
 };

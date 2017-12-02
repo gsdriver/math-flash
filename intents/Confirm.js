@@ -9,7 +9,7 @@ const utils = require('../utils');
 module.exports = {
   handleNoIntent: function() {
     this.handler.state = 'SAYNAME';
-    utils.emitResponse(this.emit, null, null, this.t('CHANGE_SAYNANE'), this.t('CHANGE_SAYNANE_REPROMPT'));
+    utils.emitResponse.call(this, this.t('CHANGE_SAYNANE'), this.t('CHANGE_SAYNANE_REPROMPT'));
   },
   handleYesIntent: function() {
     // Great, save the name and let's play
@@ -23,6 +23,6 @@ module.exports = {
     const reprompt = this.t('CONFIRM_WELCOME_REPROMPT');
     this.handler.state = '';
     delete this.attributes.STATE;
-    utils.emitResponse(this.emit, null, null, speech, reprompt);
+    utils.emitResponse.call(this, speech, reprompt);
   },
 };

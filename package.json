@@ -9,7 +9,8 @@
   "dependencies": {
     "alexa-sdk": "^1.0.9",
     "alexa-speech-utils": "^0.1.0",
-    "aws-sdk": "^2.7.10"
+    "aws-sdk": "^2.7.10",
+    "voicelabs": "^1.0.1"
   },
   "devDependencies": {
     "del": "^2.2.2",
