@@ -4,6 +4,7 @@
 
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+const speechUtils = require('alexa-speech-utils')();
 const VoiceLabs = require('voicelabs')('064de1c0-d712-11a7-161f-02f814b60257');
 
 module.exports = {
@@ -54,5 +55,18 @@ module.exports = {
         callback(null, questions);
       }
     });
+  },
+  listQuizzes: function(attributes) {
+    // Read all available categories
+    let category;
+    const catList = [];
+
+    for (category in attributes.categories) {
+      if (category) {
+        catList.push(category);
+      }
+    }
+
+    return speechUtils.or(catList);
   },
 };

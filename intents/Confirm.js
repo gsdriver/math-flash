@@ -19,7 +19,10 @@ module.exports = {
       this.attributes[this.attributes.lastPlayer] = {};
     }
 
-    const speech = this.t('CONFIRM_WELCOME').replace('{0}', this.attributes.lastPlayer);
+    const speech = this.t('CONFIRM_WELCOME')
+      .replace('{0}', this.attributes.lastPlayer)
+      .replace('{1}', utils.listQuizzes(this.attributes));
+
     const reprompt = this.t('CONFIRM_WELCOME_REPROMPT');
     this.handler.state = '';
     delete this.attributes.STATE;

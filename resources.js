@@ -9,7 +9,7 @@ const resources = {
       'SAYNAME_UNHANDLED_INTENT': 'Sorry, I didn\'t get that. Try saying your name.',
       'SAYNAME_UNHANDLED_INTENT_REPROMPT': 'Try saying your name.',
       // From Launch.js
-      'LAUNCH_WELCOMEBACK': 'Welcome back {0}. You can either practice or take a test, or say Change Player if you are not {1} ... Now, what can I help you with?',
+      'LAUNCH_WELCOMEBACK': 'Welcome back {0}, would you like to practice {1}? Or say Change Player if you are not {2}. ',
       'LAUNCH_WELCOMEBACK_REPROMPT': 'For instructions on what you can say, please say help me.',
       'LAUNCH_NEWPLAYER': 'Welcome to Private Tutor. What is your name?',
       'LAUNCH_NEWPALYER_REPROMPT': 'What is your name?',
@@ -19,7 +19,7 @@ const resources = {
       'NAME_WELCOME': 'I heard the name {0}. Is this correct?',
       'NAME_WELCOME_REPROMPT': 'Say yes or no.',
       // From Confirm.js
-      'CONFIRM_WELCOME': 'Welcome {0}. You can either practice or take a test ... Now, what can I help you with?',
+      'CONFIRM_WELCOME': 'Welcome {0}, would you like to practice {1}?',
       'CONFIRM_WELCOME_REPROMPT': 'For instructions on what you can say, please say help me.',
       // From Exit.js
       'EXIT_GOODBYE': 'Goodbye.',
@@ -35,6 +35,9 @@ const resources = {
       // From Test.js
       'TEST_UNKNOWN_QUIZ': 'I\'m sorry, I didn\'t catch the quiz you would like to practice.  You can say {0}',
       'TEST_CANT_START_QUIZ': 'I had trouble starting a quiz for {0}',
+      'TEST_QUESTION_REPROMPT': 'Say more time if you need more time to answer',
+      // From More.js
+      'MORE_QUESTION': 'OK. {0}',
       // From Change.js
       'CHANGE_SAYNANE': 'What is your name?',
       'CHANGE_SAYNANE_REPROMPT': 'What is your name?',

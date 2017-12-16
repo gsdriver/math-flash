@@ -6,25 +6,8 @@
       {
         "name": "Category",
         "type": "LIST_OF_CATEGORIES"
-      },
-      {
-        "name": "NumQuestion",
-        "type": "AMAZON.NUMBER"
       }
      ]
-    },
-    {
-      "intent": "TestIntent",
-      "slots": [
-        {
-          "name": "Category",
-          "type": "LIST_OF_CATEGORIES"
-        },
-        {
-          "name": "NumQuestion",
-          "type": "AMAZON.NUMBER"
-        }
-      ]
     },
     {
       "intent": "AnswerIntent",
@@ -46,6 +29,9 @@
     },
     {
       "intent": "ChangePlayerIntent"
+    },
+    {
+      "intent": "MoreTimeIntent"
     },
     {
       "intent": "AMAZON.YesIntent"

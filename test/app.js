@@ -12,11 +12,11 @@ const USERID = 'not-amazon';
 function BuildEvent(argv)
 {
   // Templates that can fill in the intent
-  var practiceIntent = {'name': 'PracticeIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}, 'NumQuestion': {'name': 'NumQuestion', 'value': ''}}};
-  var testIntent = {'name': 'TestIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}, 'NumQuestion': {'name': 'NumQuestion', 'value': ''}}};
+  var practiceIntent = {'name': 'PracticeIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}}};
   var answerIntent = {'name': 'AnswerIntent', 'slots': {'Answer': {'name': 'Answer', 'value': ''}}};
   var nameIntent = {'name': 'NameIntent', 'slots': {'Name': {'name': 'Name', 'value': ''}}};
   var changeIntent = {'name': 'ChangePlayerIntent', 'slots': {}};
+  var moreIntent = {'name': 'MoreTimeIntent', 'slots': {}};
   var yes = {'name': 'AMAZON.YesIntent', 'slots': {}};
   var no = {'name': 'AMAZON.NoIntent', 'slots': {}};
   var help = {'name': 'AMAZON.HelpIntent', 'slots': {}};
@@ -108,11 +108,6 @@ function BuildEvent(argv)
   else if (argv[2] == 'practice') {
     lambda.request.intent = practiceIntent;
     practiceIntent.slots.Category.value = (argv.length > 3) ? argv[3] : '';
-    practiceIntent.slots.NumQuestion.value = (argv.length > 4) ? argv[4] : '';
-  } else if (argv[2] == 'test') {
-    lambda.request.intent = testIntent;
-    testIntent.slots.Category.value = (argv.length > 3) ? argv[3] : '';
-    testIntent.slots.NumQuestion.value = (argv.length > 4) ? argv[4] : '';
   } else if (argv[2] == 'answer') {
     lambda.request.intent = answerIntent;
     answerIntent.slots.Answer.value = (argv.length > 3) ? argv[3] : '';
@@ -121,6 +116,8 @@ function BuildEvent(argv)
     nameIntent.slots.Name.value = (argv.length > 3) ? argv[3] : '';
   } else if (argv[2] == 'change') {
     lambda.request.intent = changeIntent;
+  } else if (argv[2] == 'more') {
+    lambda.request.intent = moreIntent;
   } else if (argv[2] == 'exit') {
     return endEvent;
   } else if (argv[2] == 'launch') {

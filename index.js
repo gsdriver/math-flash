@@ -11,6 +11,7 @@ const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const Name = require('./intents/Name');
 const Change = require('./intents/Change');
+const More = require('./intents/More');
 const Confirm = require('./intents/Confirm');
 const utils = require('./utils');
 const resources = require('./resources');
@@ -63,9 +64,9 @@ const handlers = {
     }
   },
   'LaunchRequest': Launch.handleIntent,
-  'PracticeIntent': Test.handlePracticeIntent,
-  'TestIntent': Test.handleTestIntent,
+  'PracticeIntent': Test.handleIntent,
   'AnswerIntent': Answer.handleIntent,
+  'MoreTimeIntent': More.handleIntent,
   'ChangePlayerIntent': Change.handleIntent,
   'AMAZON.StopIntent': Exit.handleIntent,
   'AMAZON.CancelIntent': Exit.handleIntent,

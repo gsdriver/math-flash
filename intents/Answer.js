@@ -51,7 +51,7 @@ module.exports = {
       if (player.lastQuestion != -1) {
         // OK, let's ask this one
         speechResponse += this.t('ANSWER_NEXT_QUESTION').replace('{0}', player.questions[player.lastQuestion].question);
-        utils.emitResponse.call(this, speechResponse, player.questions[player.lastQuestion].question);
+        utils.emitResponse.call(this, speechResponse, this.t('TEST_QUESTION_REPROMPT'));
       } else {
         // They are done - the messaging differs between practice and test
         if (player.mode == 'practice') {

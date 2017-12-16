@@ -5,63 +5,45 @@
 'use strict';
 
 const utils = require('../utils');
-const speechUtils = require('alexa-speech-utils')();
 
 module.exports = {
-  handlePracticeIntent: function() {
-    startTest.call(this, false);
-  },
-  handleTestIntent: function() {
-    startTest.call(this, true);
-  },
-};
+  handleIntent: function() {
+    // The user is starting a practice round
+    // they need to specify a category that they would like to play
+    const player = this.attributes[this.attributes.lastPlayer];
+    const intent = this.event.request.intent;
+    const categorySlot = intent.slots.Category;
+    let error;
 
-const startTest = function(test) {
-  // The user is starting a practice round
-  // they need to specify a category that they would like to play
-  const player = this.attributes[this.attributes.lastPlayer];
-  const intent = this.event.request.intent;
-  const categorySlot = intent.slots.Category;
-  let error;
+    if (!categorySlot || !categorySlot.value) {
+      error = this.t('TEST_UNKNOWN_QUIZ').replace('{0}', utils.listQuizzes(this.attributes));
+      utils.emitResponse.call(this, error);
+    } else {
+      // OK, let's pick out random questions and start the quiz!
+      // Since we have to store a timer, we will save the current time in the session
+      pickQuestions.call(this, categorySlot.value, (err, questions) => {
+        if (!questions) {
+          utils.emitResponse.call(this, this.t('TEST_CANT_START_QUIZ').replace('{0}', categorySlot.value));
+        } else {
+          // Add these to the attributes
+          player.questions = questions;
+          player.lastQuestion = 0;
+          player.mode = 'practice';
+          player.startTime = Date.now();
 
-  if (!categorySlot || !categorySlot.value) {
-    error = this.t('TEST_UNKNOWN_QUIZ').replace('{0}', listQuizzes(this.attributes));
-    utils.emitResponse.call(this, error);
-  } else {
-    // OK, let's pick out random questions and start the quiz!
-    // Since we have to store a timer, we will save the current time in the session
-    let numberOfQuestions;
-
-    if (intent.slots.NumQuestion && intent.slots.NumQuestion.value) {
-      numberOfQuestions = parseInt(intent.slots.NumQuestion.value);
-      if (isNaN(numberOfQuestions)) {
-        numberOfQuestions = undefined;
-      }
+          // We have the questions, now ask the first one (and mark that we've asked it)
+          utils.emitResponse.call(this, questions[0].question, this.t('TEST_QUESTION_REPROMPT'));
+        }
+      });
     }
-
-    pickQuestions.call(this, categorySlot.value, numberOfQuestions, (err, questions) => {
-      if (!questions) {
-        utils.emitResponse.call(this, this.t('TEST_CANT_START_QUIZ').replace('{0}', categorySlot.value));
-      } else {
-        // Add these to the attributes
-        player.questions = questions;
-        player.lastQuestion = 0;
-        player.mode = ((test) ? 'test' : 'practice');
-        player.startTime = Date.now();
-
-        // We have the questions, now ask the first one (and mark that we've asked it)
-        utils.emitResponse.call(this, questions[0].question, questions[0].question);
-      }
-    });
-  }
+  },
 };
 
-const pickQuestions = function(category, numberOfQuestions, callback) {
+const pickQuestions = function(category, callback) {
   const questions = [];
   const picked = [];
   let i;
   let j;
-  let questionsToPick = numberOfQuestions;
   let matchedCategory;
   let item;
 
@@ -80,19 +62,12 @@ const pickQuestions = function(category, numberOfQuestions, callback) {
       if (err) {
         callback(err, null);
       } else {
-        if (questionsToPick === undefined) {
-          questionsToPick = allQuestions.questions;
-        }
-        if (questionsToPick > allQuestions.cards.length) {
-          questionsToPick = allQuestions.cards.length;
-        }
-
         // Picked will store each index, and as we pick one, we'll remove it
         for (i = 0; i < allQuestions.cards.length; i++) {
           picked.push(i);
         }
 
-        for (i = 0; i < questionsToPick; i++) {
+        for (i = 0; i < allQuestions.questions; i++) {
           const oneQuestion = {};
           j = Math.floor(Math.random() * picked.length);
 
@@ -114,16 +89,3 @@ const pickQuestions = function(category, numberOfQuestions, callback) {
   }
 };
 
-function listQuizzes(attributes) {
-  // Read all available categories
-  let category;
-  const catList = [];
-
-  for (category in attributes.categories) {
-    if (category) {
-      catList.push(category);
-    }
-  }
-
-  return speechUtils.or(catList);
-}
