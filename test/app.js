@@ -14,6 +14,7 @@ function BuildEvent(argv)
   // Templates that can fill in the intent
   var practiceIntent = {'name': 'PracticeIntent', 'slots': {'Category': {'name': 'Category', 'value': ''}}};
   var answerIntent = {'name': 'AnswerIntent', 'slots': {'Answer': {'name': 'Answer', 'value': ''}}};
+  var levelIntent = {'name': 'LevelIntent', 'slots': {'Level': {'name': 'Level', 'value': ''}}};
   var nameIntent = {'name': 'NameIntent', 'slots': {'Name': {'name': 'Name', 'value': ''}}};
   var changeIntent = {'name': 'ChangePlayerIntent', 'slots': {}};
   var moreIntent = {'name': 'MoreTimeIntent', 'slots': {}};
@@ -111,6 +112,9 @@ function BuildEvent(argv)
   } else if (argv[2] == 'answer') {
     lambda.request.intent = answerIntent;
     answerIntent.slots.Answer.value = (argv.length > 3) ? argv[3] : '';
+  } else if (argv[2] == 'level') {
+    lambda.request.intent = levelIntent;
+    levelIntent.slots.Level.value = (argv.length > 3) ? argv[3] : '';
   } else if (argv[2] == 'name') {
     lambda.request.intent = nameIntent;
     nameIntent.slots.Name.value = (argv.length > 3) ? argv[3] : '';

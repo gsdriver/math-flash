@@ -14,6 +14,13 @@ AnswerIntent is it {Answer}
 AnswerIntent {Answer} is my answer
 AnswerIntent {Answer}
 
+LevelIntent play level {Level}
+LevelIntent select level {Level}
+LevelIntent choose level {Level}
+LevelIntent I want level {Level}
+LevelIntent level {Level}
+LevelIntent {Level}
+
 NameIntent my name is {Name}
 NameIntent I am {Name}
 NameIntent I'm {Name}

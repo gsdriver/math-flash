@@ -8,6 +8,8 @@ const resources = {
       'UNHANDLED_INTENT_REPROMPT': 'Try saying help.',
       'SAYNAME_UNHANDLED_INTENT': 'Sorry, I didn\'t get that. Try saying your name.',
       'SAYNAME_UNHANDLED_INTENT_REPROMPT': 'Try saying your name.',
+      'LEVEL_UNHANDLED_INTENT': 'Sorry, I didn\'t get that. Try saying your the level you want to play.',
+      'LEVEL_UNHANDLED_INTENT_REPROMPT': 'Try saying the level you want to play.',
       // From Launch.js
       'LAUNCH_WELCOMEBACK': 'Welcome back {0}, would you like to practice {1}? Or say Change Player if you are not {2}. ',
       'LAUNCH_WELCOMEBACK_REPROMPT': 'For instructions on what you can say, please say help me.',
@@ -36,6 +38,13 @@ const resources = {
       'TEST_UNKNOWN_QUIZ': 'I\'m sorry, I didn\'t catch the quiz you would like to practice.  You can say {0}',
       'TEST_CANT_START_QUIZ': 'I had trouble starting a quiz for {0}',
       'TEST_QUESTION_REPROMPT': 'Say more time if you need more time to answer',
+      'TEST_LEVEL': 'level {0} <break time=\'200ms\'/> {1}',
+      'TEST_LEVEL_SELECT': 'Would you like to play {0}?',
+      // From Level.js
+      'LEVEL_ERROR': 'Sorry, there was a problem reading questions.',
+      'LEVEL_NO_LEVEL': 'Sorry, I didn\'t hear a level. {0}',
+      'LEVEL_INVALID_LEVEL': 'Sorry, {0} is an invalid level. {1}',
+      'LEVEL_START_TEST': 'Great, this level has {0} questions. First question <break time=\'200ms\'/> {1}',
       // From More.js
       'MORE_QUESTION': 'OK. {0}',
       // From Change.js

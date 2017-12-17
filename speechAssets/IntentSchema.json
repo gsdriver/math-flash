@@ -10,6 +10,15 @@
      ]
     },
     {
+      "intent": "LevelIntent",
+      "slots": [
+        {
+          "name": "Level",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
       "intent": "AnswerIntent",
       "slots": [
         {
